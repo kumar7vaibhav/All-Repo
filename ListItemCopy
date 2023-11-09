@@ -34,6 +34,13 @@ for ($i = 0; $i -lt $items.Count; $i += $batchSize) {
             }
         }
 
+        # Copy attachments
+        foreach ($attachment in $item.Attachments) {
+            $attachmentFile = $item.Attachments[$attachment]
+            $fileBytes = $attachmentFile.OpenBinary()
+            $newItem.Attachments.Add($attachment, $fileBytes)
+        }
+
         # Update and commit the changes
         $newItem.Update()
     }
@@ -41,4 +48,4 @@ for ($i = 0; $i -lt $items.Count; $i += $batchSize) {
     Write-Host "Copied $($i + $batchSize) items out of $($items.Count) items."
 }
 
-Write-Host "List items copied successfully!"
+Write-Host "List items with attachments copied successfully!"
