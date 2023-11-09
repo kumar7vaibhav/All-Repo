@@ -1,0 +1,44 @@
+# Add the SharePoint PowerShell Snap-in
+if ((Get-PSSnapin -Name Microsoft.SharePoint.PowerShell -ErrorAction SilentlyContinue) -eq $null) {
+    Add-PSSnapin Microsoft.SharePoint.PowerShell
+}
+
+# Site URL and List Names
+$sourceSiteURL = "http://YourSourceSiteURL"
+$destinationSiteURL = "http://YourDestinationSiteURL"
+$sourceListName = "SourceList"
+$destinationListName = "DestinationList"
+
+# Number of items to copy at a time
+$batchSize = 500
+
+# Get the Source and Destination Lists
+$sourceList = (Get-SPWeb $sourceSiteURL).Lists[$sourceListName]
+$destinationList = (Get-SPWeb $destinationSiteURL).Lists[$destinationListName]
+
+# Retrieve all items from the source list
+$items = $sourceList.Items
+
+# Loop through items in batches
+for ($i = 0; $i -lt $items.Count; $i += $batchSize) {
+    $batch = $items[$i..($i + $batchSize - 1)]
+
+    # Loop through each item in the batch and copy it to the destination list
+    foreach ($item in $batch) {
+        $newItem = $destinationList.Items.Add()
+
+        # Copy field values from source item to destination item
+        foreach ($field in $sourceList.Fields) {
+            if ($field.ReadOnlyField -eq $false -and $field.InternalName -ne "Attachments") {
+                $newItem[$field.InternalName] = $item[$field.InternalName]
+            }
+        }
+
+        # Update and commit the changes
+        $newItem.Update()
+    }
+
+    Write-Host "Copied $($i + $batchSize) items out of $($items.Count) items."
+}
+
+Write-Host "List items copied successfully!"
