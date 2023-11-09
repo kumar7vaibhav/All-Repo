@@ -42,6 +42,3 @@ for ($i = 0; $i -lt $items.Count; $i += $batchSize) {
 }
 
 Write-Host "List items copied successfully!"
-
-admin@M365x43810752.onmicrosoft.com
-;~Tny989R+4yW(Oy
