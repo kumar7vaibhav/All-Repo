@@ -1,0 +1,35 @@
+#Configuration variables
+$WebURL = "http://spwfe"
+$SourceListName = "List1"
+$TargetListName= "List 2"
+ 
+#Get Objects
+$web = Get-SPWeb $WebURL
+$SourceList = $web.Lists[$SourceListName]
+$TargetList = $web.Lists[$TargetListName]
+ 
+#Get all source items
+$SourceColumns = $sourceList.Fields
+$SourceItems = $SourceList.GetItems();
+ 
+#Iterate through each item and add to target list
+Foreach($SourceItem in $SourceItems)
+{
+    $TargetItem = $TargetList.AddItem()
+    Foreach($column in $SourceColumns)
+    {
+        if($column.ReadOnlyField -eq $False -and $column.InternalName -ne "Attachments")
+        {
+             $TargetItem[$($column.InternalName)] = $sourceItem[$($column.InternalName)];
+        }
+    }
+    $TargetItem.Update()
+ 
+    #Copy Attachments
+    Foreach($Attachment in $SourceItem.Attachments)
+    {
+        $spFile = $SourceList.ParentWeb.GetFile($SourceItem.Attachments.UrlPrefix + $Attachment)
+        $TargetItem.Attachments.Add($Attachment, $spFile.OpenBinary())
+    }
+    $TargetItem.Update()
+}
