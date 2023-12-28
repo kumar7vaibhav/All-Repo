@@ -28,7 +28,7 @@ module "google_storage_bucket" {
     uniform_bucket_level_access = true
     output_path =  "/tmp/function-source.zip"
     type = "zip"
-    source_dir = "./v2/helloPubSub/function-source.zip"
+    source_dir = "./helloPubSub/function-source.zip"
     bucket_object_name = "function-source.zip"
 }
 
