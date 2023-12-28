@@ -1,4 +1,3 @@
-google_version = "3.5.0"
 account_id = "my-service-account"
 display_name = "My Service Account"
 project = "my-gcp-project"

@@ -1,7 +1,3 @@
-variable "google_version" {
- description = "The version of Google provider"
- default    = ">= 4.34.0"
-}
 
 variable "account_id" {
  description = "The ID of the Google service account"

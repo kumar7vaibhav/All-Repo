@@ -1,10 +1,10 @@
 terraform {
- required_providers {
-   google = {
-     source = "hashicorp/google"
-     version = var.google_version
-   }
- }
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 4.34.0"
+    }
+  }
 }
 
 module "google_service_account" {
