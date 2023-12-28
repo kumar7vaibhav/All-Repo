@@ -40,8 +40,8 @@ module "google_cloudfunctions2_function" {
   project = "instant-ascent-409409"
   runtime = "nodejs16"
   entry_point = "helloPubSub"
-  bucket_name = google_storage_bucket.default.name
-  bucket_object_name = google_storage_bucket_object.default.name
+  bucket_name = module.google_storage_bucket.bucket_name
+  bucket_object_name = module.google_storage_bucket.bucket_object_name
 
   max_instance_count = 3
   min_instance_count = 1
@@ -51,6 +51,6 @@ module "google_cloudfunctions2_function" {
   all_traffic_on_latest_revision = true
   trigger_region = "asia-south2"
   event_type = "google.cloud.pubsub.topic.v1.messagePublished"
-  pubsub_topic_id = google.pubsub_topic.default.id
+  pubsub_topic_id = module.google_pubsub_topic.pubsub_topic_id
   retry_policy = "RETRY_POLICY_RETRY"
 }
