@@ -49,6 +49,7 @@ module "google_cloudfunctions2_function" {
   timeout_seconds = 60
   ingress_settings = "ALLOW_INTERNAL_ONLY"
   all_traffic_on_latest_revision = true
+  service_account_email = module.google_service_account.service_account_email
   trigger_region = "asia-south2"
   event_type = "google.cloud.pubsub.topic.v1.messagePublished"
   pubsub_topic_id = module.google_pubsub_topic.pubsub_topic_id

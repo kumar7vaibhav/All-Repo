@@ -27,7 +27,7 @@ resource "google_cloudfunctions2_function" "default" {
     }
     ingress_settings               = var.ingress_settings
     all_traffic_on_latest_revision = var.all_traffic_on_latest_revision
-    service_account_email          = google_service_account.default.email
+    service_account_email          = var.service_account_email
   }
 
   event_trigger {

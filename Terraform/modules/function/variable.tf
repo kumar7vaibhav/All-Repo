@@ -61,6 +61,10 @@ variable "all_traffic_on_latest_revision" {
   type = bool
 }
 
+variable "service_account_email" {
+  description = "Service acocunt email"
+}
+
 variable "trigger_region" {
   description = "Region of the trigger"
   type = string
