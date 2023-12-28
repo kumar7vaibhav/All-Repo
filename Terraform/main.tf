@@ -12,20 +12,20 @@ module "google_service_account" {
     source = "./modules/service_account"
     account_id  = "test-gcf-sa"
     display_name = "Test Service Account"
-    project    = "instant-ascent-409409"
+    project    = "terraform-pubsub-409511"
 }
 
 module "google_pubsub_topic" {
     source = "./modules/pubsub"
     topic_name = "functions2-topic"
-    project  = "instant-ascent-409409"
+    project  = "terraform-pubsub-409511"
 }
 
 module "google_storage_bucket" {
     source = "./modules/bucket"
     bucket_name = "2165421516-gcf-source"
     location = "asia-south2"
-    project = "instant-ascent-409409" 
+    project = "terraform-pubsub-409511" 
     uniform_bucket_level_access = true
     output_path =  "/tmp/function-source.zip"
     type = "zip"
@@ -38,7 +38,7 @@ module "google_cloudfunctions2_function" {
 
   function_name = "function"
   function_location = "asia-south2"
-  project = "instant-ascent-409409"
+  project = "terraform-pubsub-409511"
   runtime = "nodejs16"
   entry_point = "helloPubSub"
   bucket_name = module.google_storage_bucket.bucket_name
