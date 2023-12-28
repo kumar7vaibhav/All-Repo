@@ -12,6 +12,11 @@ variable "uniform_bucket_level_access" {
   type = bool
 }
 
+variable "project" {
+  description = "Name of the project"
+  type = string
+}
+
 variable "output_path" {
   description = "out path for the file."
 }

@@ -25,10 +25,11 @@ module "google_storage_bucket" {
     source = "./modules/bucket"
     bucket_name = "2165421516-gcf-source"
     location = "asia-south2"
+    project = "instant-ascent-409409" 
     uniform_bucket_level_access = true
     output_path =  "/tmp/function-source.zip"
     type = "zip"
-    source_dir = "./helloPubSub/function-source.zip"
+    source_dir = "./helloPubSub"
     bucket_object_name = "function-source.zip"
 }
 
