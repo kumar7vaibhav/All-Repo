@@ -1,0 +1,25 @@
+Add-PSSnapin Microsoft.SharePoint.PowerShell -ErrorAction SilentlyContinue
+
+# Get SharePoint Content Databases
+$contentDatabases = Get-SPDatabase | Where-Object { $_.Type -eq "Microsoft.SharePoint.Administration.SPContentDatabase" }
+
+# Function to convert bytes to human-readable format
+function ConvertTo-HumanReadable {
+    param([double]$size)
+    $units = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    $index = 0
+    while ($size -ge 1KB -and $index -lt $units.Count) {
+        $size = $size / 1KB
+        $index++
+    }
+    "{0:N2} {1}" -f $size, $units[$index]
+}
+
+# Loop through each content database and calculate size
+foreach ($contentDB in $contentDatabases) {
+    $dbName = $contentDB.Name
+    $dbSize = $contentDB.disksizerequired
+    $humanReadableSize = ConvertTo-HumanReadable -size $dbSize
+    Write-Host "Content Database: $dbName"
+    Write-Host "Size: $humanReadableSize"
+}
