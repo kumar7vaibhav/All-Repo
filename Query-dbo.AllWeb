@@ -36,9 +36,7 @@ CLOSE DatabaseCursor
 DEALLOCATE DatabaseCursor
 
 -- Export the results from the temporary table to a file
-SELECT * FROM #TempAllWebs
-ORDER BY [DatabaseName], [WebId]
-INTO OUTFILE @OutputFile
+EXEC master..xp_cmdshell 'bcp "#TempAllWebs" out "' + @OutputFile + '" -c -C RAW -T -S' + @@SERVERNAME
 
 -- Drop the temporary table
 DROP TABLE #TempAllWebs
