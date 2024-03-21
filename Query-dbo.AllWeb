@@ -1,0 +1,25 @@
+DECLARE @DatabaseName NVARCHAR(MAX)
+
+DECLARE DatabaseCursor CURSOR
+READ_ONLY
+FOR
+SELECT name
+FROM master.sys.databases
+WHERE name LIKE 'WSS_Content_%'
+
+OPEN DatabaseCursor
+
+FETCH NEXT FROM DatabaseCursor INTO @DatabaseName
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    DECLARE @SQL NVARCHAR(MAX)
+    SET @SQL = 'SELECT * FROM [' + @DatabaseName + '].dbo.AllWebs'
+    PRINT @SQL
+    EXEC(@SQL)
+
+    FETCH NEXT FROM DatabaseCursor INTO @DatabaseName
+END
+
+CLOSE DatabaseCursor
+DEALLOCATE DatabaseCursor
