@@ -1,4 +1,8 @@
 DECLARE @DatabaseName NVARCHAR(MAX)
+DECLARE @OutputFile NVARCHAR(MAX) = 'C:\Temp\AllWebs.txt' -- Modify the file path as needed
+
+-- Create or overwrite the output file
+EXEC master..xp_cmdshell 'DEL ' + @OutputFile
 
 DECLARE DatabaseCursor CURSOR
 READ_ONLY
@@ -15,11 +19,14 @@ WHILE @@FETCH_STATUS = 0
 BEGIN
     DECLARE @SQL NVARCHAR(MAX)
     SET @SQL = 'SELECT * FROM [' + @DatabaseName + '].dbo.AllWebs'
-    PRINT @SQL
-    EXEC(@SQL)
+
+    -- Append the results to the output file
+    EXEC master..xp_cmdshell 'bcp "[?]" queryout "' + @OutputFile + '" -c -C RAW -T -S' + @@SERVERNAME, @SQL
 
     FETCH NEXT FROM DatabaseCursor INTO @DatabaseName
 END
 
 CLOSE DatabaseCursor
 DEALLOCATE DatabaseCursor
+
+PRINT 'Results exported to ' + @OutputFile
